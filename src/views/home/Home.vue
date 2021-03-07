@@ -69,7 +69,7 @@
   import RecommendView from './childComps/RecommendView'
   import FeatureView from "./childComps/FeatureView";
 
-  import {getHomeMultidata} from "network/home";
+  import {getHomeMultidata, getHomeGoods} from "network/home";
 
 
   export default {
@@ -85,13 +85,24 @@
       return {
         banners: [],
         recommends: [],
+        goods: {
+          'pop': {page: 0, list: []},
+          'new': {page: 0, list: []},
+          'sell': {page: 0, list: []},
+        },
       }
     },
     created() {
+      //请求多个数据，轮播图、快速导航
       getHomeMultidata().then(res => {
         console.log(res);
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
+      })
+
+      //请求商品数据
+      getHomeGoods('pop', 1).then(res => {
+        console.log(res);
       })
     }
   }
